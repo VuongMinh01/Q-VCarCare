@@ -4,15 +4,9 @@ export const loginRoute = `${host}/api/auth/login`;
 export const checkPhoneExistRoute = `${host}/api/auth/checkPhoneTonTai`;
 export const forgotPasswordRoute = `${host}/api/auth/doiMatKhau`;
 
-
 export const getAllProducts = () => {
     return fetch('https://dummyjson.com/products').then(res => res.json());
 }
 export const getAllCustomer = () => {
     return fetch('https://dummyjson.com/users').then(res => res.json())
-}
-
-export const addServiceRoute = `${host}/api/add/addService`;
-export const getAllService = () => {
-    return fetch('http://localhost:4000/test').then(res => res.json());
 }

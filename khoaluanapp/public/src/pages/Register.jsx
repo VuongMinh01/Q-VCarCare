@@ -31,14 +31,13 @@ export default function Register() {
 
     // < Kết nối firebase (dùng để gửi mã otp) > //
     const firebaseConfig = {
-        apiKey: "AIzaSyAkD7nadF2AfX3uVLBbPa-BYPGfQN2XLEY",
-        authDomain: "khoaluanapp.firebaseapp.com",
-        databaseURL: "https://khoaluanapp-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "khoaluanapp",
-        storageBucket: "khoaluanapp.appspot.com",
-        messagingSenderId: "371345237421",
-        appId: "1:371345237421:web:315715f98491376ab6ad24",
-        measurementId: "G-TCW04LN0R3"
+        apiKey: "AIzaSyARseHklRXUerl9EnE9zm9X8HhzKu3xDoo",
+        authDomain: "q-vcarcare.firebaseapp.com",
+        projectId: "q-vcarcare",
+        storageBucket: "q-vcarcare.appspot.com",
+        messagingSenderId: "686489309037",
+        appId: "1:686489309037:web:f026c61ee26d77c88f9464",
+        measurementId: "G-3DQESHET22"
     };
     const app = initializeApp(firebaseConfig);
     // eslint-disable-next-line
@@ -50,6 +49,7 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
+            console.log("in validtaion", registerRoute);
             const { password, username, email, phone } = values;
             const { data } = await axios.post(registerRoute, {
                 username,

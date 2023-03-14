@@ -1,10 +1,11 @@
 import { Button, Space, Table, Typography } from "antd";
 import React, { useState, useEffect } from "react";
-import { addServiceRoute, getAllService } from "../../utils/APIRoutes";
+
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { addServiceRoute } from "../../utils/APIRoutes";
 export default function DichVu() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
@@ -19,6 +20,7 @@ export default function DichVu() {
 
     useEffect(() => {
         setLoading(true);
+        // API get danh sach db
 
         // getAllService().then((res) => {
         //     setDataSource(res.services);
@@ -27,20 +29,20 @@ export default function DichVu() {
 
 
     const handleClick = async (e) => {
-        console.log("1");
-        const { serviceId, serviceName, serviceContent, time, price } = values;
-        const { data } = await axios.post(addServiceRoute, {
-            serviceId, serviceName, serviceContent, time, price,
-        })
-        if (data.status === false) {
-            toast.error(data.msg, toastOptions);
-            console.log("1");
-        }
-        if (data.status === true) {
-            localStorage.setItem("car-app-service", JSON.stringify(data.service));
-            console.log("2");
+        // console.log("1");
+        // const { serviceId, serviceName, serviceContent, time, price } = values;
+        // const { data } = await axios.post(addServiceRoute, {
+        //     serviceId, serviceName, serviceContent, time, price,
+        // })
+        // if (data.status === false) {
+        //     toast.error(data.msg, toastOptions);
+        //     console.log("1");
+        // }
+        // if (data.status === true) {
+        //     localStorage.setItem("car-app-service", JSON.stringify(data.service));
+        //     console.log("2");
 
-        }
+        // }
     };
 
     const toastOptions = {
