@@ -10,3 +10,6 @@ export const getAllProducts = () => {
 export const getAllCustomer = () => {
     return fetch('https://dummyjson.com/users').then(res => res.json())
 }
+
+export const addService = `${host}/api/addService/addService`;
+export const addEmployee = `${host}/api/addEmployee/addEmployee`;
