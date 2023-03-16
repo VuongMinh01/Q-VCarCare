@@ -5,7 +5,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { addServiceRoute } from "../../utils/APIRoutes";
+import { addServiceRoute, getAllService } from "../../utils/APIRoutes";
 export default function DichVu() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
@@ -22,9 +22,9 @@ export default function DichVu() {
         setLoading(true);
         // API get danh sach db
 
-        // getAllService().then((res) => {
-        //     setDataSource(res.services);
-        // });
+        getAllService().then((res) => {
+            setDataSource(res.Services);
+        })
     }, []);
 
 
@@ -93,7 +93,7 @@ export default function DichVu() {
                     {
                         key: "4",
                         title: "Thời gian",
-                        dataIndex: "time",
+                        dataIndex: "serviceTime",
                     },
                     {
                         key: "5",
@@ -103,7 +103,7 @@ export default function DichVu() {
                     {
                         key: "6",
                         title: "Giá tiền",
-                        dataIndex: "price",
+                        dataIndex: "servicePrice",
                     },
                     {
                         key: "7",
