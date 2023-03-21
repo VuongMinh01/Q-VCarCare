@@ -5,7 +5,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
-import { addService, getAllService } from "../../utils/APIRoutes";
+import { addService, deleteService, getAllService } from "../../utils/APIRoutes";
 export default function DichVu() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
@@ -33,7 +33,6 @@ export default function DichVu() {
     const handleClick = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            console.log("1");
             const { serviceId, serviceName, serviceContent, serviceTime, servicePrice } = values;
             const { data } = await axios.post(addService, {
                 serviceId,
@@ -44,11 +43,11 @@ export default function DichVu() {
             })
             if (data.status === false) {
                 toast.error(data.msg, toastOptions);
-                console.log("2");
+                console.log("Thêm thất bại");
             }
             if (data.status === true) {
                 localStorage.setItem("car-app-service", JSON.stringify(data.service));
-                console.log("3");
+                console.log("Thêm thành công");
 
             }
         }
@@ -78,6 +77,26 @@ export default function DichVu() {
         }
         return true;
     };
+    const onDeleteService = async (e) => {
+
+        console.log(e.serviceId);
+        const { serviceId, serviceName, serviceContent, serviceTime, servicePrice } = values;
+
+        const { data } = await axios.delete(deleteService, {
+            serviceId,
+            serviceName,
+            serviceContent,
+            serviceTime,
+            servicePrice,
+        });
+
+        console.log('deleted');
+
+
+
+
+    }
+
 
     const toastOptions = {
         position: "bottom-right",
@@ -90,9 +109,7 @@ export default function DichVu() {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
-    const onDeleteService = (record) => {
 
-    }
     return (
         <div>
             <Space size={20} direction={"vertical"}>
@@ -146,7 +163,7 @@ export default function DichVu() {
                             return (
                                 <>
                                     <EditOutlined />
-                                    <DeleteOutlined onClick={onDeleteService(record)} style={{ color: "red", marginLeft: "12px" }} />
+                                    <DeleteOutlined onClick={() => onDeleteService(record)} style={{ color: "red", marginLeft: "12px" }} />
                                 </>
                             )
                         }

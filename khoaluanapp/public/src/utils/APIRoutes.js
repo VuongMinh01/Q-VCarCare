@@ -19,4 +19,5 @@ export const getAllEmployee = () => {
 }
 export const addService = `${host}/api/service/addService`;
 export const addEmployee = `${host}/api/employee/addEmployee`;
-export const deleteService = `${host}/api/deleteService/deleteService/id`;
+export const deleteService = `${host}/api/service/deleteService/:serviceId`;
+export const updateService = `${host}/api/service/updateService/:serviceId`;
