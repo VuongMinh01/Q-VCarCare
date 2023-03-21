@@ -1,57 +1,54 @@
 import { Space, Table, Typography } from "antd";
 import React, { useState, useEffect } from "react";
-import { getAllCustomer } from "../../utils/APIRoutes";
-export default function KhachHang() {
+import { getAllEmployee } from "../../utils/APIRoutes";
+export default function NhanVien() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
-
     useEffect(() => {
         setLoading(true);
-        getAllCustomer().then((res) => {
-            setDataSource(res.users);
+        // API get danh sach db
 
-        });
+        getAllEmployee().then((res) => {
+            setDataSource(res.data);
+        })
     }, []);
     return (
         <div>
             <Space size={20} direction={"vertical"}>
 
-                <Typography.Title level={4}>Sản phẩm</Typography.Title>
+                <Typography.Title level={4}>Danh sách nhân viên</Typography.Title>
                 <Table columns={[
                     {
                         key: "1",
                         title: "Id",
-                        dataIndex: "id",
+                        dataIndex: "employeeId",
                     },
                     {
                         key: "2",
-                        title: "firstName",
-                        dataIndex: "firstName",
+                        title: "Họ tên",
+                        dataIndex: "employeeName",
 
                     },
                     {
                         key: "3",
-                        title: "LastName",
-                        dataIndex: "lastName",
-                    },
-                    {
-                        key: "4",
-                        title: "Email",
+                        title: "Mail",
                         dataIndex: "email",
                     },
                     {
-                        key: "5",
-                        title: "Phone",
+                        key: "4",
+                        title: "Số điện thoại",
                         dataIndex: "phone",
                     },
 
                     {
-                        key: "6",
-                        title: "Address",
+                        key: "5",
+                        title: "Địa chỉ",
                         dataIndex: "address",
-                        render: (address) => {
-                            return <span>{address.address}</span>
-                        }
+                    },
+                    {
+                        key: "6",
+                        title: "Trạng thái",
+                        dataIndex: "status",
                     },
                 ]}
                     dataSource={dataSource}
@@ -62,6 +59,7 @@ export default function KhachHang() {
                     }
                 ></Table>
             </Space>
+
         </div>
     )
 }

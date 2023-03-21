@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu } from "antd"
-import { AppstoreOutlined, CarOutlined, LogoutOutlined, ShopOutlined, ShoppingCartOutlined, TagOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, CarOutlined, LogoutOutlined, ShopOutlined, ShoppingCartOutlined, TagOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 export default function SideMenu() {
     const navigate = useNavigate();
@@ -45,6 +45,11 @@ export default function SideMenu() {
                         label: "Khách hàng",
                         key: '/pagequantri/khachhang',
                         icon: <UserOutlined />
+                    },
+                    {
+                        label: "Nhân viên",
+                        key: '/pagequantri/nhanvien',
+                        icon: <TeamOutlined />
                     },
                     {
                         label: "Khuyến mãi",

@@ -1,11 +1,11 @@
 import { Button, Space, Table, Typography } from "antd";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
-import { addServiceRoute, getAllService } from "../../utils/APIRoutes";
+import { addService, getAllService } from "../../utils/APIRoutes";
 export default function DichVu() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
@@ -14,8 +14,8 @@ export default function DichVu() {
         serviceId: "",
         serviceName: "",
         serviceContent: "",
-        time: "",
-        price: "",
+        serviceTime: "",
+        servicePrice: "",
     });
 
     useEffect(() => {
@@ -23,26 +23,60 @@ export default function DichVu() {
         // API get danh sach db
 
         getAllService().then((res) => {
-            setDataSource(res.Services);
+            setDataSource(res.data);
         })
     }, []);
 
+    const ref = useRef();
+
 
     const handleClick = async (e) => {
-        // console.log("1");
-        // const { serviceId, serviceName, serviceContent, time, price } = values;
-        // const { data } = await axios.post(addServiceRoute, {
-        //     serviceId, serviceName, serviceContent, time, price,
-        // })
-        // if (data.status === false) {
-        //     toast.error(data.msg, toastOptions);
-        //     console.log("1");
-        // }
-        // if (data.status === true) {
-        //     localStorage.setItem("car-app-service", JSON.stringify(data.service));
-        //     console.log("2");
+        e.preventDefault();
+        if (handleValidation()) {
+            console.log("1");
+            const { serviceId, serviceName, serviceContent, serviceTime, servicePrice } = values;
+            const { data } = await axios.post(addService, {
+                serviceId,
+                serviceName,
+                serviceContent,
+                serviceTime,
+                servicePrice,
+            })
+            if (data.status === false) {
+                toast.error(data.msg, toastOptions);
+                console.log("2");
+            }
+            if (data.status === true) {
+                localStorage.setItem("car-app-service", JSON.stringify(data.service));
+                console.log("3");
 
-        // }
+            }
+        }
+    };
+    const handleValidation = () => {
+        const { serviceId, serviceName, serviceContent, serviceTime, servicePrice } = values;
+        if (serviceId === "" || serviceId.length < 3) {
+            toast.error("Id phải lớn hơn 3 kí tự", toastOptions);
+            return false;
+        }
+        if (serviceName.length < 3) {
+            toast.error("Tên dịch vụ không được ít hơn 3 ký tự.", toastOptions);
+            return false;
+        }
+        else if (serviceContent === "") {
+            toast.error("Thông tin không được để trống.", toastOptions);
+            return false;
+        }
+
+        else if (serviceTime === "") {
+            toast.error("Thời gian không được để trống.", toastOptions);
+            return false;
+        }
+        else if (servicePrice === "") {
+            toast.error("Giá tiền không được để trống.", toastOptions);
+            return false;
+        }
+        return true;
     };
 
     const toastOptions = {
@@ -65,11 +99,11 @@ export default function DichVu() {
 
                 <Typography.Title level={4}>Dịch vụ</Typography.Title>
                 <Space>
-                    <Input placeholder="Mã dịch vụ" name="serviceId" onChange={handleOnChange} />
-                    <Input placeholder="Tên dịch vụ" name="serviceName" onChange={handleOnChange} />
-                    <Input placeholder="Thời gian" name="time" onChange={handleOnChange} />
-                    <Input placeholder="Thông tin chung" name="serviceContent" onChange={handleOnChange} />
-                    <Input placeholder="Giá tiền" name="price" onChange={handleOnChange} />
+                    <Input placeholder="Mã dịch vụ" name="serviceId" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Tên dịch vụ" name="serviceName" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Thời gian" name="serviceTime" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Thông tin chung" name="serviceContent" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Giá tiền" name="servicePrice" onChange={(e) => handleOnChange(e)} />
                     <Button onClick={(e) => handleClick(e)}>Thêm</Button>
 
                 </Space>
@@ -77,7 +111,7 @@ export default function DichVu() {
                     {
                         key: "1",
                         title: "Id",
-                        dataIndex: "_id",
+                        dataIndex: "id",
                     },
                     {
                         key: "2",
@@ -126,6 +160,9 @@ export default function DichVu() {
                     }
                 ></Table>
             </Space>
+            <ToastContainer />
+
         </div>
+
     )
 }

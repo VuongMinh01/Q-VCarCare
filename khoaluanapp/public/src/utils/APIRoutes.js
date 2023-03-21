@@ -1,4 +1,4 @@
-const host = "http://localhost:4000";
+const host = "http://localhost:4001";
 export const registerRoute = `${host}/api/auth/register`;
 export const loginRoute = `${host}/api/auth/login`;
 export const checkPhoneExistRoute = `${host}/api/auth/checkPhoneTonTai`;
@@ -12,7 +12,11 @@ export const getAllCustomer = () => {
 }
 
 export const getAllService = () => {
-    return fetch('http://localhost:4000/getAllService').then(res => res.json())
+    return fetch('http://localhost:4001/getAllService').then(res => res.json())
 }
-export const addService = `${host}/api/addService/addService`;
-export const addEmployee = `${host}/api/addEmployee/addEmployee`;
+export const getAllEmployee = () => {
+    return fetch('http://localhost:4001/getAllEmployee').then(res => res.json())
+}
+export const addService = `${host}/api/service/addService`;
+export const addEmployee = `${host}/api/employee/addEmployee`;
+export const deleteService = `${host}/api/deleteService/deleteService/id`;

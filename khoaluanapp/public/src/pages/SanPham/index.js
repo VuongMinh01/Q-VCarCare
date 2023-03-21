@@ -18,10 +18,12 @@ export default function SanPham() {
                 <Typography.Title level={4}>Sản phẩm</Typography.Title>
                 <Table columns={[
                     {
+                        key: "1",
                         title: "Id",
                         dataIndex: "id",
                     },
                     {
+                        key: "2",
                         title: "Thumbnail",
                         dataIndex: "thumbnail",
                         render: (link) => {
@@ -29,22 +31,27 @@ export default function SanPham() {
                         }
                     },
                     {
+                        key: "3",
                         title: "Title",
                         dataIndex: "title",
                     },
                     {
+                        key: "4",
                         title: "Price",
                         dataIndex: "price",
                     },
                     {
+                        key: "5",
                         title: "Brand",
                         dataIndex: "brand",
                     },
                     {
+                        key: "6",
                         title: "Stock",
                         dataIndex: "stock",
                     },
                     {
+                        key: "7",
                         title: "Category",
                         dataIndex: "category",
                     },

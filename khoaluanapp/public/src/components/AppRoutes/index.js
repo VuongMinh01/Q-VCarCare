@@ -12,6 +12,7 @@ import Xe from "../../pages/Xe";
 import DanhSachDonHang from "../../pages/DanhSachDonHang";
 import OXuLyInform from "../OXuLyInform";
 import HoaDon from "../../pages/HoaDon";
+import NhanVien from '../../pages/NhanVien';
 export default function AppRoutes() {
     return (
         <Routes>
@@ -25,6 +26,8 @@ export default function AppRoutes() {
             <Route path="/xe" element={<Xe />}></Route>
             <Route path="/khuyenmai" element={<KhuyenMai />}></Route>
             <Route path="/khachhang" element={<KhachHang />}></Route>
+            <Route path="/nhanvien" element={<NhanVien />}></Route>
+
             <Route path="/hoadon" element={<HoaDon />}></Route>
 
         </Routes>
