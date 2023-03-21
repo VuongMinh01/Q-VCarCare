@@ -89,7 +89,7 @@ export default function DichVu() {
             serviceTime,
             servicePrice,
         });
-
+        localStorage.clear();
         console.log('deleted');
 
 
