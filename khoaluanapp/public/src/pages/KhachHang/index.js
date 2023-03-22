@@ -8,7 +8,7 @@ export default function KhachHang() {
     useEffect(() => {
         setLoading(true);
         getAllCustomer().then((res) => {
-            setDataSource(res.users);
+            setDataSource(res.data);
 
         });
     }, []);
@@ -21,37 +21,31 @@ export default function KhachHang() {
                     {
                         key: "1",
                         title: "Id",
-                        dataIndex: "id",
+                        dataIndex: "customerId",
                     },
                     {
                         key: "2",
-                        title: "firstName",
-                        dataIndex: "firstName",
+                        title: "Họ tên",
+                        dataIndex: "customerName",
 
                     },
+
                     {
                         key: "3",
-                        title: "LastName",
-                        dataIndex: "lastName",
-                    },
-                    {
-                        key: "4",
                         title: "Email",
                         dataIndex: "email",
                     },
                     {
-                        key: "5",
-                        title: "Phone",
+                        key: "4",
+                        title: "Số điện thoại",
                         dataIndex: "phone",
                     },
 
                     {
-                        key: "6",
-                        title: "Address",
+                        key: "5",
+                        title: "Địa chỉ",
                         dataIndex: "address",
-                        render: (address) => {
-                            return <span>{address.address}</span>
-                        }
+
                     },
                 ]}
                     dataSource={dataSource}
