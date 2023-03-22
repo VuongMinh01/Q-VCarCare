@@ -20,7 +20,10 @@ export default function NhanVien() {
         // API get danh sach db
 
         getAllEmployee().then((res) => {
+            console.log('bbbb');
+            console.log(res);
             setDataSource(res.data);
+
         })
     }, []);
 
@@ -45,7 +48,12 @@ export default function NhanVien() {
                 console.log("Thêm thất bại");
             }
             if (data.status === true) {
+
                 localStorage.setItem("car-app-employee", JSON.stringify(data.employee));
+                console.log(data);
+                setDataSource(data.employee)
+                console.log('aaaa');
+                console.log(this.state.dataSource);
                 console.log("Thêm thành công");
 
             }
@@ -53,26 +61,26 @@ export default function NhanVien() {
     };
     const handleValidation = () => {
         const { employeeId, employeeName, phone, address, email } = values;
-        if (employeeId.length < 5 || employeeId === "") {
-            toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
-            return false;
-        }
-        else if (employeeName.length < 5) {
-            toast.error("Tên nhân viên phải lớn hơn 5 kí tự", toastOptions);
-            return false;
-        }
-        else if (phone.length !== 10) {
-            toast.error("Số điện thoại không hợp lệ", toastOptions);
-            return false;
-        }
-        else if (email === "") {
-            toast.error("Email không được để trống", toastOptions);
-            return false;
-        }
-        else if (address === "") {
-            toast.error("Địa chỉ không được để trống", toastOptions);
-            return false;
-        }
+        // if (employeeId.length < 5 || employeeId === "") {
+        //     toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
+        //     return false;
+        // }
+        // else if (employeeName.length < 5) {
+        //     toast.error("Tên nhân viên phải lớn hơn 5 kí tự", toastOptions);
+        //     return false;
+        // }
+        // else if (phone.length !== 10) {
+        //     toast.error("Số điện thoại không hợp lệ", toastOptions);
+        //     return false;
+        // }
+        // else if (email === "") {
+        //     toast.error("Email không được để trống", toastOptions);
+        //     return false;
+        // }
+        // else if (address === "") {
+        //     toast.error("Địa chỉ không được để trống", toastOptions);
+        //     return false;
+        // }
         return true;
     };
     const toastOptions = {
