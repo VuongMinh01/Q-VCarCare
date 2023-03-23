@@ -16,16 +16,13 @@ export default function NhanVien() {
         address: "",
     })
     useEffect(() => {
-        setLoading(true);
         // API get danh sach db
-
+        setLoading(true);
         getAllEmployee().then((res) => {
-            console.log('bbbb');
-            console.log(res);
             setDataSource(res.data);
-
         })
-    }, []);
+
+    }, [getAllEmployee()]);
 
     const ref = useRef();
 
@@ -50,10 +47,6 @@ export default function NhanVien() {
             if (data.status === true) {
 
                 localStorage.setItem("car-app-employee", JSON.stringify(data.employee));
-                console.log(data);
-                setDataSource(data.employee)
-                console.log('aaaa');
-                console.log(this.state.dataSource);
                 console.log("Thêm thành công");
 
             }
