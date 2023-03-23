@@ -17,12 +17,25 @@ export default function NhanVien() {
     })
     useEffect(() => {
         // API get danh sach db
+        console.log('dfghjkl');
+
         setLoading(true);
         getAllEmployee().then((res) => {
             setDataSource(res.data);
+            console.log(dataSource);
         })
 
-    }, []);
+    }, [loading]);
+
+    const updateColor = (data) => {
+        setDataSource(previousState => {
+            console.log(data);
+            previousState.push(data)
+            console.log(previousState);
+            setLoading(false)
+            return previousState
+        });
+    }
 
     const ref = useRef();
 
@@ -45,7 +58,9 @@ export default function NhanVien() {
                 console.log("Thêm thất bại");
             }
             if (data.status === true) {
-
+                setLoading(true)
+                updateColor(data.employee)
+                console.log(dataSource);
                 localStorage.setItem("car-app-employee", JSON.stringify(data.employee));
                 console.log("Thêm thành công");
 
@@ -85,6 +100,16 @@ export default function NhanVien() {
     };
     return (
         <div>
+            <ul>
+                {!loading || dataSource ? <>
+                    {dataSource.map((data) =>
+                        <li>{data.employeeName}</li>
+                    )}
+                </> : ''}
+
+
+
+            </ul>
             <Space size={20} direction={"vertical"}>
 
                 <Typography.Title level={4}>Danh sách nhân viên</Typography.Title>
