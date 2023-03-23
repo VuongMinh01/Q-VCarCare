@@ -22,7 +22,7 @@ export default function NhanVien() {
             setDataSource(res.data);
         })
 
-    }, [getAllEmployee()]);
+    }, []);
 
     const ref = useRef();
 
