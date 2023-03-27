@@ -5,7 +5,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
-import { addService, deleteService, getAllService } from "../../utils/APIRoutes";
+import { addService, deleteService, getAllService, updateService } from "../../utils/APIRoutes";
 export default function DichVu() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
@@ -128,16 +128,27 @@ export default function DichVu() {
         setIsModalOpen(true);
     };
 
-    const handleOk = () => {
+    const handleOk = async () => {
+        console.log('11111');
+        const { serviceId, serviceName, serviceContent, serviceTime, servicePrice } = values;
+        const { data } = await axios.put(updateService, {
+            serviceId,
+            serviceName,
+            serviceContent,
+            serviceTime,
+            servicePrice,
+        });
+        console.log('222222');
+        setLoading(true)
+        updateTable(data.service)
+        console.log('updated');
         setIsModalOpen(false);
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    const handleChoose = () => {
 
-    }
 
 
     return (
@@ -159,7 +170,7 @@ export default function DichVu() {
                     {
                         key: "1",
                         title: "Id",
-                        dataIndex: "id",
+                        dataIndex: "_id",
                     },
                     {
                         key: "2",
