@@ -1,4 +1,4 @@
-import { Button, Space, Table, Typography } from "antd";
+import { Button, Space, Table, Typography, Modal } from "antd";
 import React, { useState, useEffect, useRef } from "react";
 
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
@@ -9,6 +9,7 @@ import { addService, deleteService, getAllService } from "../../utils/APIRoutes"
 export default function DichVu() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [values, setValues] = useState({
         serviceId: "",
@@ -25,11 +26,19 @@ export default function DichVu() {
         getAllService().then((res) => {
             setDataSource(res.data);
         })
-    }, []);
+    }, [loading]);
 
     const ref = useRef();
 
-
+    const updateTable = (data) => {
+        setDataSource(previousState => {
+            console.log(data);
+            // previousState.push(data);
+            console.log(previousState);
+            setLoading(false)
+            return previousState
+        });
+    }
     const handleClick = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
@@ -46,6 +55,8 @@ export default function DichVu() {
                 console.log("Thêm thất bại");
             }
             if (data.status === true) {
+                setLoading(true)
+                updateTable(data.service)
                 localStorage.setItem("car-app-service", JSON.stringify(data.service));
                 console.log("Thêm thành công");
 
@@ -89,6 +100,8 @@ export default function DichVu() {
             serviceTime,
             servicePrice,
         });
+        setLoading(true)
+        updateTable(data.service)
         localStorage.clear();
         console.log('deleted');
 
@@ -110,6 +123,23 @@ export default function DichVu() {
     };
 
 
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const handleChoose = () => {
+
+    }
+
+
     return (
         <div>
             <Space size={20} direction={"vertical"}>
@@ -124,6 +154,7 @@ export default function DichVu() {
                     <Button onClick={(e) => handleClick(e)}>Thêm</Button>
 
                 </Space>
+
                 <Table columns={[
                     {
                         key: "1",
@@ -162,7 +193,8 @@ export default function DichVu() {
                         render: (record) => {
                             return (
                                 <>
-                                    <EditOutlined />
+                                    <EditOutlined onClick={showModal}
+                                    />
                                     <DeleteOutlined onClick={() => onDeleteService(record)} style={{ color: "red", marginLeft: "12px" }} />
                                 </>
                             )
@@ -179,6 +211,16 @@ export default function DichVu() {
             </Space>
             <ToastContainer />
 
+            <Modal
+                title="Cập nhật thông tin"
+                open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+            >
+                <Input placeholder="Tên dịch vụ" name="serviceName" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Thời gian" name="serviceTime" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Thông tin chung" name="serviceContent" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Giá tiền" name="servicePrice" onChange={(e) => handleOnChange(e)} />
+
+            </Modal>
         </div>
 
     )

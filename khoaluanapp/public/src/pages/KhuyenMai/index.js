@@ -3,29 +3,70 @@ import React, { useState, useEffect } from "react";
 
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import { addServiceRoute } from "../../utils/APIRoutes";
+import { addCoupon, deleteCoupon, getAllCoupon } from "../../utils/APIRoutes";
 export default function KhuyenMai() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
 
-    const [values, setValues] = useState();
+    const [values, setValues] = useState({
+        couponId: "",
+        couponName: "",
+        couponContent: "",
+        startDate: "",
+        endDate: "",
+        types: ","
+    });
 
     useEffect(() => {
         setLoading(true);
         // API get danh sach db
 
-        // getAllService().then((res) => {
-        //     setDataSource(res.services);
-        // });
-    }, []);
+        getAllCoupon().then((res) => {
+            setDataSource(res.data);
+        });
+    }, [loading]);
 
+    const handleValidation = () => {
+        const { couponId, couponName, couponContent, startDate, endDate, types } = values;
+        return true;
+    }
 
     const handleClick = async (e) => {
+        e.preventDefault();
+        if (handleValidation()) {
+            const { couponId, couponName, couponContent, startDate, endDate, types } = values;
+            const { data } = await axios.post(addCoupon, {
+                couponId,
+                couponName,
+                couponContent,
+                startDate,
+                endDate,
+                types,
+            })
+            if (data.status === false) {
+                toast.error(data.msg, toastOptions);
+                console.log("Thêm thất bại");
+            }
+            if (data.status === true) {
+                setLoading(true)
+                updateTable(data.coupon)
+                localStorage.setItem("car-app-coupon", JSON.stringify(data.coupon));
+                console.log("Thêm thành công");
 
+            }
+        }
     };
-
+    const updateTable = (data) => {
+        setDataSource(previousState => {
+            console.log(data);
+            // previousState.push(data);
+            console.log(previousState);
+            setLoading(false)
+            return previousState
+        });
+    }
     const toastOptions = {
         position: "bottom-right",
         autoClose: 8000,
@@ -37,8 +78,21 @@ export default function KhuyenMai() {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
-    const onDeleteService = (record) => {
-
+    const onDeleteService = async (e) => {
+        console.log(e.couponId);
+        const { couponId, couponName, couponContent, startDate, endDate, types } = values;
+        const { data } = await axios.delete(deleteCoupon, {
+            couponId,
+            couponName,
+            couponContent,
+            startDate,
+            endDate,
+            types,
+        })
+        setLoading(true)
+        updateTable(data.coupon)
+        localStorage.clear();
+        console.log('deleted');
     }
     return (
         <div>
@@ -46,12 +100,12 @@ export default function KhuyenMai() {
 
                 <Typography.Title level={4}>Dịch vụ</Typography.Title>
                 <Space>
-                    <Input placeholder="Mã khuyến mãi" name="couponId" onChange={handleOnChange} />
-                    <Input placeholder="Tên khuyến mãi" name="couponName" onChange={handleOnChange} />
-                    <Input placeholder="Ngày bắt đầu" name="startDate" onChange={handleOnChange} />
-                    <Input placeholder="Ngày kết thúc" name="endDate" onChange={handleOnChange} />
-                    <Input placeholder="Thông tin chung" name="couponContent" onChange={handleOnChange} />
-                    <Input placeholder="Loại" name="type" onChange={handleOnChange} />
+                    <Input placeholder="Mã khuyến mãi" name="couponId" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Tên khuyến mãi" name="couponName" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Ngày bắt đầu" name="startDate" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Ngày kết thúc" name="endDate" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Thông tin chung" name="couponContent" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Loại" name="types" onChange={(e) => handleOnChange(e)} />
                     <Button onClick={(e) => handleClick(e)}>Thêm</Button>
 
                 </Space>
@@ -64,33 +118,33 @@ export default function KhuyenMai() {
                     {
                         key: "2",
                         title: "Mã khuyến mãi",
-                        dataIndex: "serviceId",
+                        dataIndex: "couponId",
                     },
 
                     {
                         key: "3",
                         title: "Tên khuyến mãi",
-                        dataIndex: "serviceName",
+                        dataIndex: "couponName",
                     },
                     {
                         key: "4",
                         title: "Ngày bắt đầu",
-                        dataIndex: "",
+                        dataIndex: "startDate",
                     },
                     {
                         key: "5",
                         title: "Ngày kết thúc",
-                        dataIndex: "serviceContent",
+                        dataIndex: "endDate",
                     },
                     {
                         key: "6",
                         title: "Thông tin chung",
-                        dataIndex: "price",
+                        dataIndex: "couponContent",
                     },
                     {
                         key: "7",
-                        title: "Loại",
-                        dataIndex: "price",
+                        title: "Loai",
+                        dataIndex: "types",
                     },
 
                     {
@@ -100,7 +154,7 @@ export default function KhuyenMai() {
                             return (
                                 <>
                                     <EditOutlined />
-                                    <DeleteOutlined onClick={onDeleteService(record)} style={{ color: "red", marginLeft: "12px" }} />
+                                    <DeleteOutlined onClick={() => onDeleteService(record)} style={{ color: "red", marginLeft: "12px" }} />
                                 </>
                             )
                         }
@@ -114,6 +168,7 @@ export default function KhuyenMai() {
                     }
                 ></Table>
             </Space>
+            <ToastContainer />
         </div>
     )
 }

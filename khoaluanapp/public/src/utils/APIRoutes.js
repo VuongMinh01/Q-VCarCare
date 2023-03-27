@@ -18,9 +18,17 @@ export const getAllEmployee = () => {
 export const getAllCustomer = () => {
     return fetch('http://localhost:4001/getAllCustomer').then(res => res.json())
 }
+export const getAllCoupon = () => {
+    return fetch('http://localhost:4001/getAllCoupon').then(res => res.json())
+}
 export const addService = `${host}/api/service/addService`;
 export const addEmployee = `${host}/api/employee/addEmployee`;
 export const addCustomer = `${host}/api/customer/addCustomer`;
+export const addCoupon = `${host}/api/coupon/addCoupon`;
+
 
 export const deleteService = `${host}/api/service/deleteService/:serviceId`;
+export const deleteCoupon = `${host}/api/coupon/deleteCoupon/:couponId`;
+
 export const updateService = `${host}/api/service/updateService/:serviceId`;
+

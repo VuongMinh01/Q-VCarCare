@@ -17,20 +17,19 @@ export default function NhanVien() {
     })
     useEffect(() => {
         // API get danh sach db
-        console.log('dfghjkl');
-
         setLoading(true);
         getAllEmployee().then((res) => {
             setDataSource(res.data);
             console.log(dataSource);
         })
 
+
     }, [loading]);
 
     const updateColor = (data) => {
         setDataSource(previousState => {
             console.log(data);
-            previousState.push(data)
+            // previousState.push(data);
             console.log(previousState);
             setLoading(false)
             return previousState
@@ -54,7 +53,6 @@ export default function NhanVien() {
                 email,
             })
             if (data.status === false) {
-                toast.error(data.msg, toastOptions);
                 console.log("Thêm thất bại");
             }
             if (data.status === true) {
@@ -91,6 +89,7 @@ export default function NhanVien() {
         // }
         return true;
     };
+
     const toastOptions = {
         position: "bottom-right",
         autoClose: 8000,
@@ -98,9 +97,10 @@ export default function NhanVien() {
         pauseOnHover: true,
         theme: "dark"
     };
+
     return (
         <div>
-            <ul>
+            {/* <ul>
                 {!loading || dataSource ? <>
                     {dataSource.map((data) =>
                         <li>{data.employeeName}</li>
@@ -109,7 +109,7 @@ export default function NhanVien() {
 
 
 
-            </ul>
+            </ul> */}
             <Space size={20} direction={"vertical"}>
 
                 <Typography.Title level={4}>Danh sách nhân viên</Typography.Title>

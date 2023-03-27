@@ -1,6 +1,6 @@
 import { Space, Table, Typography, Button } from "antd";
 import React, { useState, useEffect } from "react";
-import { getAllCustomer } from "../../utils/APIRoutes";
+import { addCustomer, getAllCustomer } from "../../utils/APIRoutes";
 import Input from "antd/es/input/Input";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,18 +21,70 @@ export default function KhachHang() {
             setDataSource(res.data);
 
         });
-    }, []);
+    }, [loading]);
 
     const handleOnChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
 
     }
-    const handleClick = (e) => {
 
+    const handleClick = async (e) => {
+        e.preventDefault();
+        if (handleValidation()) {
+            const { customerId, customerName, phone, address, email } = values;
+            const { data } = await axios.post(addCustomer, {
+                customerId,
+                customerName,
+                phone,
+                address,
+                email,
+            })
+            if (data.status === false) {
+                console.log("Thêm thất bại");
+            }
+            if (data.status === true) {
+                setLoading(true)
+                updateTable(data.customer)
+                console.log(dataSource);
+                localStorage.setItem("car-app-customer", JSON.stringify(data.customer));
+                console.log("Thêm thành công");
+
+            }
+        }
+    };
+    const updateTable = (data) => {
+        setDataSource(previousState => {
+            console.log(data);
+            // previousState.push(data);
+            console.log(previousState);
+            setLoading(false)
+            return previousState
+        });
     }
 
     const handleValidation = () => {
-
+        const { customerId, customerName, phone, address, email } = values;
+        // if (customerId.length < 5 || customerId === "") {
+        //     toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
+        //     return false;
+        // }
+        // else if (customerName.length < 5) {
+        //     toast.error("Tên nhân viên phải lớn hơn 5 kí tự", toastOptions);
+        //     return false;
+        // }
+        // else if (phone.length !== 10) {
+        //     toast.error("Số điện thoại không hợp lệ", toastOptions);
+        //     return false;
+        // }
+        // else if (email === "") {
+        //     toast.error("Email không được để trống", toastOptions);
+        //     return false;
+        // }
+        // else if (address === "") {
+        //     toast.error("Địa chỉ không được để trống", toastOptions);
+        //     return false;
+        // }
+        return true;
     }
     const toastOptions = {
         position: "bottom-right",
