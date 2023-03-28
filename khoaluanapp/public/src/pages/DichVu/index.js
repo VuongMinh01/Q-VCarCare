@@ -1,5 +1,5 @@
 import { Button, Space, Table, Typography, Modal } from "antd";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
@@ -28,7 +28,6 @@ export default function DichVu() {
         })
     }, [loading]);
 
-    const ref = useRef();
 
     const updateTable = (data) => {
         setDataSource(previousState => {

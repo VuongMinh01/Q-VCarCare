@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Modal, Space, Table, Row, Col, Divider } from "antd";
+import { Button, Card, Modal, Space, Table, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export default function OXuLy() {

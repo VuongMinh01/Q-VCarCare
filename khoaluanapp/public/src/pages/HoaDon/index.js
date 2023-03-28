@@ -1,4 +1,4 @@
-import { Button, Space, Table, Typography } from "antd";
+import { Space, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { getAllCustomer } from "../../utils/APIRoutes";
 export default function HoaDon() {
@@ -11,18 +11,19 @@ export default function HoaDon() {
             setDataSource(res.users);
 
         });
-    }, []);
+    }, [loading]);
 
     /// Chấp nhân đơn hàng -> clear khỏi db -> đổi status phiếu sang đang xử lý ( default: chưa xử lý)
-    const handleAccept = () => {
-        alert("hi");
+    // const handleAccept = () => {
+    //     alert("hi");
 
-    }
-    /// Từ chối đơn hàng -> clear khỏi db
-    const handleDenied = () => {
-        alert("hi");
+    // }
+    // /// Từ chối đơn hàng -> clear khỏi db
+    // const handleDenied = () => {
+    //     alert("hi");
 
-    }
+    // }
+
     return (
         <div>
             <Space>

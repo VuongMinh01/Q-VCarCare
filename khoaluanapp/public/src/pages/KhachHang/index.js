@@ -64,26 +64,26 @@ export default function KhachHang() {
 
     const handleValidation = () => {
         const { customerId, customerName, phone, address, email } = values;
-        // if (customerId.length < 5 || customerId === "") {
-        //     toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
-        //     return false;
-        // }
-        // else if (customerName.length < 5) {
-        //     toast.error("Tên nhân viên phải lớn hơn 5 kí tự", toastOptions);
-        //     return false;
-        // }
-        // else if (phone.length !== 10) {
-        //     toast.error("Số điện thoại không hợp lệ", toastOptions);
-        //     return false;
-        // }
-        // else if (email === "") {
-        //     toast.error("Email không được để trống", toastOptions);
-        //     return false;
-        // }
-        // else if (address === "") {
-        //     toast.error("Địa chỉ không được để trống", toastOptions);
-        //     return false;
-        // }
+        if (customerId.length < 5 || customerId === "") {
+            toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+        }
+        else if (customerName.length < 5) {
+            toast.error("Tên nhân viên phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+        }
+        else if (phone.length !== 10) {
+            toast.error("Số điện thoại không hợp lệ", toastOptions);
+            return false;
+        }
+        else if (email === "") {
+            toast.error("Email không được để trống", toastOptions);
+            return false;
+        }
+        else if (address === "") {
+            toast.error("Địa chỉ không được để trống", toastOptions);
+            return false;
+        }
         return true;
     }
     const toastOptions = {

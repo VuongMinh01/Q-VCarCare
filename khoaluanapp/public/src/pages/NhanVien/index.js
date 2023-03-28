@@ -1,5 +1,5 @@
 import { Space, Table, Typography, Button } from "antd";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { addEmployee, getAllEmployee } from "../../utils/APIRoutes";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
@@ -36,7 +36,6 @@ export default function NhanVien() {
         });
     }
 
-    const ref = useRef();
 
     const handleOnChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
@@ -65,31 +64,6 @@ export default function NhanVien() {
             }
         }
     };
-    const handleValidation = () => {
-        const { employeeId, employeeName, phone, address, email } = values;
-        // if (employeeId.length < 5 || employeeId === "") {
-        //     toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
-        //     return false;
-        // }
-        // else if (employeeName.length < 5) {
-        //     toast.error("Tên nhân viên phải lớn hơn 5 kí tự", toastOptions);
-        //     return false;
-        // }
-        // else if (phone.length !== 10) {
-        //     toast.error("Số điện thoại không hợp lệ", toastOptions);
-        //     return false;
-        // }
-        // else if (email === "") {
-        //     toast.error("Email không được để trống", toastOptions);
-        //     return false;
-        // }
-        // else if (address === "") {
-        //     toast.error("Địa chỉ không được để trống", toastOptions);
-        //     return false;
-        // }
-        return true;
-    };
-
     const toastOptions = {
         position: "bottom-right",
         autoClose: 8000,
@@ -97,6 +71,32 @@ export default function NhanVien() {
         pauseOnHover: true,
         theme: "dark"
     };
+
+    const handleValidation = () => {
+        const { employeeId, employeeName, phone, address, email } = values;
+        if (employeeId.length < 5) {
+            toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+        }
+        else if (employeeName.length < 5) {
+            toast.error("Tên nhân viên phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+        }
+        else if (phone.length !== 10) {
+            toast.error("Số điện thoại không hợp lệ", toastOptions);
+            return false;
+        }
+        else if (email === "") {
+            toast.error("Email không được để trống", toastOptions);
+            return false;
+        }
+        else if (address === "") {
+            toast.error("Địa chỉ không được để trống", toastOptions);
+            return false;
+        }
+        return true;
+    };
+
 
     return (
         <div>

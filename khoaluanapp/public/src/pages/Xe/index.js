@@ -1,11 +1,11 @@
 import { Button, Space, Table, Typography, Modal } from "antd";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
-import { getAllCar, addCar } from "../../utils/APIRoutes";
+import { getAllCar, addCar, deleteCar, updateCar } from "../../utils/APIRoutes";
 export default function Xe() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
@@ -37,15 +37,62 @@ export default function Xe() {
     }
 
     const handleClick = async (e) => {
+        e.preventDefault();
+        if (handleValidation()) {
+            const { carId, carName, carType, carCompany } = values;
+            const { data } = await axios.post(addCar, {
+                carId,
+                carName,
+                carType,
+                carCompany,
+            })
+            if (data.status === false) {
+                toast.error(data.msg, toastOptions);
+                console.log("Thêm thất bại");
+            }
+            if (data.status === true) {
+                setLoading(true)
+                updateTable(data.service)
+                localStorage.setItem("car-app-car", JSON.stringify(data.car));
+                console.log("Thêm thành công");
 
+            }
+        }
     }
 
     const handleValidation = () => {
-
+        const { carId, carName, carType, carCompany } = values;
+        if (carId.length < 5) {
+            toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+        }
+        if (carName.length < 5) {
+            toast.error("Tên xe phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+        }
+        if (carType === "") {
+            toast.error("Loại xe không được để rỗng", toastOptions);
+            return false;
+        }
+        if (carCompany === "") {
+            toast.error("Hãng xe không được để rỗng", toastOptions);
+            return false;
+        }
+        return true;
     }
 
     const onDeleteService = async (e) => {
-
+        const { carId, carName, carType, carCompany } = values;
+        const { data } = await axios.delete(deleteCar, {
+            carId,
+            carName,
+            carCompany,
+            carType,
+        });
+        setLoading(true)
+        updateTable(data.car)
+        localStorage.clear();
+        console.log('deleted');
     }
 
 
@@ -66,7 +113,17 @@ export default function Xe() {
     };
 
     const handleOk = async () => {
-
+        const { carId, carName, carCompany, carType } = values;
+        const { data } = await axios.put(updateCar, {
+            carId,
+            carName,
+            carCompany,
+            carType,
+        });
+        setLoading(true)
+        updateTable(data.service)
+        console.log('updated');
+        setIsModalOpen(false);
     }
 
     const handleCancel = () => {

@@ -10,7 +10,7 @@ export default function SanPham() {
         getAllProducts().then((res) => {
             setDataSource(res.products);
         });
-    }, []);
+    }, [loading]);
     return (
         <div>
             <Space size={20} direction={"vertical"}>

@@ -11,7 +11,7 @@ export default function DonHang() {
             setDataSource(res.users);
 
         });
-    }, []);
+    }, [loading]);
 
     /// Chấp nhân đơn hàng -> clear khỏi db -> đổi status phiếu sang đang xử lý ( default: chưa xử lý)
     const handleAccept = () => {

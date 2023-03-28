@@ -31,6 +31,35 @@ export default function KhuyenMai() {
 
     const handleValidation = () => {
         const { couponId, couponName, couponContent, startDate, endDate, types } = values;
+        if (couponId.length < 5) {
+            toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+
+        }
+        if (couponName.length < 5) {
+            toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
+            return false;
+
+        }
+        if (couponContent === "") {
+            toast.error("Thông tin không được để rỗng", toastOptions);
+            return false;
+
+        }
+        if (startDate === "") {
+            toast.error("Ngày bắt đầu không được để rỗng", toastOptions);
+            return false;
+
+        }
+        if (endDate === "") {
+            toast.error("Ngày kết thúc không được để rỗng", toastOptions);
+            return false;
+
+        }
+        if (types === "") {
+            toast.error("Loại không được để rỗng", toastOptions);
+            return false;
+        }
         return true;
     }
 

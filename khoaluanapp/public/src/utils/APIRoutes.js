@@ -33,7 +33,9 @@ export const addCar = `${host}/api/car/addCar`;
 
 export const deleteService = `${host}/api/service/deleteService/:serviceId`;
 export const deleteCoupon = `${host}/api/coupon/deleteCoupon/:couponId`;
+export const deleteCar = `${host}/api/car/deleteCar/:carId`;
 
 export const updateService = `${host}/api/service/updateService/:serviceId`;
 export const updateCoupon = `${host}/api/coupon/updateCoupon/:couponId`;
+export const updateCar = `${host}/api/car/updateCar/:carId`;
 
