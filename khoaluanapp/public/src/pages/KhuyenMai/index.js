@@ -1,14 +1,15 @@
-import { Button, Space, Table, Typography } from "antd";
+import { Button, Space, Table, Typography, Modal } from "antd";
 import React, { useState, useEffect } from "react";
 
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Input from "antd/es/input/Input";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import { addCoupon, deleteCoupon, getAllCoupon } from "../../utils/APIRoutes";
+import { addCoupon, deleteCoupon, getAllCoupon, updateCoupon } from "../../utils/APIRoutes";
 export default function KhuyenMai() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [values, setValues] = useState({
         couponId: "",
@@ -94,6 +95,31 @@ export default function KhuyenMai() {
         localStorage.clear();
         console.log('deleted');
     }
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = async () => {
+        const { couponId, couponName, couponContent, startDate, endDate, types } = values;
+        const { data } = await axios.put(updateCoupon, {
+            couponId,
+            couponName,
+            couponContent,
+            startDate,
+            endDate,
+            types,
+        });
+        setLoading(true)
+        updateTable(data.coupon)
+        console.log('updated');
+        setIsModalOpen(false);
+        console.log(data);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <div>
             <Space size={20} direction={"vertical"}>
@@ -153,7 +179,7 @@ export default function KhuyenMai() {
                         render: (record) => {
                             return (
                                 <>
-                                    <EditOutlined />
+                                    <EditOutlined onClick={showModal} />
                                     <DeleteOutlined onClick={() => onDeleteService(record)} style={{ color: "red", marginLeft: "12px" }} />
                                 </>
                             )
@@ -169,6 +195,17 @@ export default function KhuyenMai() {
                 ></Table>
             </Space>
             <ToastContainer />
+
+            <Modal
+                title="Cập nhật thông tin khuyến mãi"
+                open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+            >
+                <Input placeholder="Tên khuyến mãi" name="couponName" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Ngày bắt đầu" name="startDate" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Ngày kết thúc" name="endDate" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Thông tin chung" name="couponContent" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Loại" name="types" onChange={(e) => handleOnChange(e)} />
+            </Modal>
         </div>
     )
 }
