@@ -98,7 +98,7 @@ export default function KhachHang() {
         <div>
             <Space size={20} direction={"vertical"}>
 
-                <Typography.Title level={4}>Sản phẩm</Typography.Title>
+                <Typography.Title level={4}>Danh sách khách hàng</Typography.Title>
                 <Space>
                     <Input placeholder="Mã khách hàng" name="customerId" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Tên khách hàng" name="customerName" onChange={(e) => handleOnChange(e)} />

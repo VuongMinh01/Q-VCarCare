@@ -10,19 +10,19 @@ export const getAllProducts = () => {
 
 
 export const getAllService = () => {
-    return fetch('http://localhost:4001/getAllService').then(res => res.json())
+    return fetch('http://localhost:4001/api/service/getAllService').then(res => res.json())
 }
 export const getAllEmployee = () => {
-    return fetch('http://localhost:4001/getAllEmployee').then(res => res.json())
+    return fetch('http://localhost:4001/api/employee/getAllEmployee').then(res => res.json())
 }
 export const getAllCustomer = () => {
-    return fetch('http://localhost:4001/getAllCustomer').then(res => res.json())
+    return fetch('http://localhost:4001/api/customer/getAllCustomer').then(res => res.json())
 }
 export const getAllCoupon = () => {
-    return fetch('http://localhost:4001/getAllCoupon').then(res => res.json())
+    return fetch('http://localhost:4001/api/coupon/getAllCoupon').then(res => res.json())
 }
 export const getAllCar = () => {
-    return fetch('http://localhost:4001/getAllCar').then(res => res.json())
+    return fetch('http://localhost:4001/api/car/getAllCar').then(res => res.json())
 }
 export const addService = `${host}/api/service/addService`;
 export const addEmployee = `${host}/api/employee/addEmployee`;
@@ -39,3 +39,4 @@ export const updateService = `${host}/api/service/updateService/:serviceId`;
 export const updateCoupon = `${host}/api/coupon/updateCoupon/:couponId`;
 export const updateCar = `${host}/api/car/updateCar/:carId`;
 
+export const getEmployee = `${host}/api/employee/getEmployee/:employeeId`;
