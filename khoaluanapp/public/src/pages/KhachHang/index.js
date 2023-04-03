@@ -14,6 +14,7 @@ export default function KhachHang() {
         phone: "",
         email: "",
         address: "",
+        carPlate: "",
     })
     useEffect(() => {
         setLoading(true);
@@ -31,13 +32,14 @@ export default function KhachHang() {
     const handleClick = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            const { customerId, customerName, phone, address, email } = values;
+            const { customerId, customerName, phone, address, email, carPlate } = values;
             const { data } = await axios.post(addCustomer, {
                 customerId,
                 customerName,
                 phone,
                 address,
                 email,
+                carPlate,
             })
             if (data.status === false) {
                 console.log("Thêm thất bại");
@@ -46,7 +48,6 @@ export default function KhachHang() {
                 setLoading(true)
                 updateTable(data.customer)
                 console.log(dataSource);
-                localStorage.setItem("car-app-customer", JSON.stringify(data.customer));
                 console.log("Thêm thành công");
 
             }
@@ -105,6 +106,8 @@ export default function KhachHang() {
                     <Input placeholder="Email" name="email" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Số điện thoại" name="phone" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Địa chỉ" name="address" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Biển số xe" name="carPlate" onChange={(e) => handleOnChange(e)} />
+
                     <Button onClick={(e) => handleClick(e)}>Thêm</Button>
 
                 </Space>
@@ -131,7 +134,6 @@ export default function KhachHang() {
                         title: "Số điện thoại",
                         dataIndex: "phone",
                     },
-
                     {
                         key: "5",
                         title: "Địa chỉ",
