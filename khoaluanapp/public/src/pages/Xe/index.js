@@ -17,6 +17,8 @@ export default function Xe() {
         carName: "",
         carType: "",
         carCompany: "",
+        carPlate: "",
+        customerId: "",
     });
 
     useEffect(() => {
@@ -39,29 +41,34 @@ export default function Xe() {
     const handleClick = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            const { carId, carName, carType, carCompany } = values;
+            const { carId, carName, carType, carCompany, carPlate, customerId } = values;
             const { data } = await axios.post(addCar, {
                 carId,
                 carName,
                 carType,
                 carCompany,
+                carPlate,
+                customerId,
             })
+
             if (data.status === false) {
                 toast.error(data.msg, toastOptions);
                 console.log("Thêm thất bại");
+
             }
             if (data.status === true) {
                 setLoading(true)
                 updateTable(data.service)
-                localStorage.setItem("car-app-car", JSON.stringify(data.car));
                 console.log("Thêm thành công");
+                alert("hi");
 
             }
         }
+
     }
 
     const handleValidation = () => {
-        const { carId, carName, carType, carCompany } = values;
+        const { carId, carName, carType, carCompany, carPlate, customerId } = values;
         if (carId.length < 5) {
             toast.error("Id phải lớn hơn 5 kí tự", toastOptions);
             return false;
@@ -78,16 +85,25 @@ export default function Xe() {
             toast.error("Hãng xe không được để rỗng", toastOptions);
             return false;
         }
+        if (carPlate === "") {
+            toast.error("Biển số xe không được để rỗng", toastOptions);
+            return false;
+        }
+        if (customerId === "") {
+            toast.error("Mã khách hàng không được để rỗng", toastOptions);
+            return false;
+        }
         return true;
     }
 
     const onDeleteService = async (e) => {
-        const { carId, carName, carType, carCompany } = values;
+        const { carId, carName, carType, carCompany, carPlate } = values;
         const { data } = await axios.delete(deleteCar, {
             carId,
             carName,
             carCompany,
             carType,
+            carPlate,
         });
         setLoading(true)
         updateTable(data.car)
@@ -113,12 +129,13 @@ export default function Xe() {
     };
 
     const handleOk = async () => {
-        const { carId, carName, carCompany, carType } = values;
+        const { carId, carName, carCompany, carType, customerId } = values;
         const { data } = await axios.put(updateCar, {
             carId,
             carName,
             carCompany,
             carType,
+            customerId,
         });
         setLoading(true)
         updateTable(data.service)
@@ -142,6 +159,8 @@ export default function Xe() {
                     <Input placeholder="Tên xe" name="carName" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Loại xe" name="carType" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Hãng xe" name="carCompany" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Biển số xe" name="carPlate" onChange={(e) => handleOnChange(e)} />
+                    <Input placeholder="Mã khách hàng" name="customerId" onChange={(e) => handleOnChange(e)} />
                     <Button onClick={(e) => handleClick(e)}>Thêm</Button>
 
                 </Space>
@@ -173,9 +192,19 @@ export default function Xe() {
                         title: "Hãng xe",
                         dataIndex: "carCompany",
                     },
-
                     {
                         key: "6",
+                        title: "Biển số xe",
+                        dataIndex: "carPlate",
+                    },
+                    {
+                        key: "7",
+                        title: "Mã khách hàng",
+                        dataIndex: "customerId",
+                    },
+
+                    {
+                        key: "8",
                         title: "Actions",
                         render: (record) => {
                             return (
@@ -203,9 +232,11 @@ export default function Xe() {
                 open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
             >
                 <Input placeholder="Mã xe" name="carId" onChange={(e) => handleOnChange(e)} />
+                <Input placeholder="Mã khách hàng" name="customerId" onChange={(e) => handleOnChange(e)} />
                 <Input placeholder="Tên xe" name="carName" onChange={(e) => handleOnChange(e)} />
                 <Input placeholder="Loại xe" name="carType" onChange={(e) => handleOnChange(e)} />
                 <Input placeholder="Hãng xe" name="carCompany" onChange={(e) => handleOnChange(e)} />
+
             </Modal>
         </div>
     )

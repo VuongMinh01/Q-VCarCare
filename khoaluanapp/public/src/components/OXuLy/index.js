@@ -1,12 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Card, Modal, Space, Table, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
+import { getAllService } from "../../utils/APIRoutes";
+import axios from "axios";
 
 export default function OXuLy() {
 
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [dataSource, setDataSource] = useState([])
+    const [loading, setLoading] = useState(false)
 
+    useEffect(() => {
+        setLoading(true);
+        // API get danh sach db
+
+        getAllService().then((res) => {
+            setDataSource(res.data);
+        })
+    }, [loading]);
+
+    const updateTable = (data) => {
+        setDataSource(previousState => {
+            console.log(data);
+            // previousState.push(data);
+            console.log(previousState);
+            setLoading(false)
+            return previousState
+        });
+    }
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -30,50 +52,46 @@ export default function OXuLy() {
             <Modal title="Vị trí xử lý 1" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} >
                 <Space direction="horizontal">
                     <Table columns={[
+
                         {
                             key: "1",
-                            title: "Id",
-                            dataIndex: "_id",
-                        },
-                        {
-                            key: "2",
                             title: "Mã dịch vụ",
                             dataIndex: "serviceId",
                         },
 
                         {
-                            key: "3",
+                            key: "2",
                             title: "Tên dịch vụ",
                             dataIndex: "serviceName",
                         },
                         {
-                            key: "4",
+                            key: "3",
                             title: "Thời gian",
-                            dataIndex: "time",
+                            dataIndex: "serviceTime",
+                        },
+                        {
+                            key: "4",
+                            title: "Tên khách hàng",
+                            dataIndex: "customerName",
                         },
                         {
                             key: "5",
-                            title: "Tên khách hàng",
-                            dataIndex: "lastName",
+                            title: "Loại xe",
+                            dataIndex: "types",
                         },
                         {
                             key: "6",
-                            title: "Loại xe",
-                            dataIndex: "price",
-                        },
-                        {
-                            key: "7",
                             title: "Actions",
                             render: (record) => {
                                 return (
                                     <>
-                                        <Button >Chấp nhận</Button>
-                                        <Button >Từ chối</Button>
+                                        <Button >Click</Button>
                                     </>
                                 )
                             }
                         },
                     ]}
+                        dataSource={dataSource}
                         pagination={
                             {
                                 pageSize: 10,

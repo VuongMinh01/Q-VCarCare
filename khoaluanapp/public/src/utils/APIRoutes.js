@@ -40,3 +40,4 @@ export const updateCoupon = `${host}/api/coupon/updateCoupon/:couponId`;
 export const updateCar = `${host}/api/car/updateCar/:carId`;
 
 export const getEmployee = `${host}/api/employee/getEmployee/:employeeId`;
+export const getCustomer = `${host}/api/customer/getCustomer/:customerId`;
