@@ -11,7 +11,7 @@ import Discount from "./pages/Discount";
 import Register from "./pages/Register";
 import SideBar from "./components/SideBar";
 import PageQuanTri from "./pages/PageQuanTri";
-import Xe from "./pages/Xe"
+import Test from "./pages/Test"
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
           <Route path="/khuyen-mai" element={<Discount />} />
           <Route path="/sidebar" element={<SideBar />} />
           <Route path="/pagequantri/*" element={<PageQuanTri />}></Route>
-          <Route path="/xe" element={<Xe />}></Route>
+          <Route path="/test" element={<Test />}></Route>
 
         </Routes>
       </BrowserRouter>

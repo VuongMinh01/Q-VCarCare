@@ -8,6 +8,8 @@ export default function SideMenu() {
         <div className="SideMenu">
 
             <Menu
+                // theme="dark"
+
                 mode="inline"
                 onClick={(item) => {
                     if (item.key === "/signout") {

@@ -1,13 +1,17 @@
-import { Space, Table, Typography, Button } from "antd";
+import { Space, Table, Typography, Button, Col, Drawer, Form, Row, Select, Modal } from "antd";
 import React, { useState, useEffect } from "react";
 import { addCustomer, getAllCustomer } from "../../utils/APIRoutes";
 import Input from "antd/es/input/Input";
 import axios from "axios";
+import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function KhachHang() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
+    const { Option } = Select;
+
     const [values, setValues] = useState({
         customerId: "",
         customerName: "",
@@ -16,6 +20,20 @@ export default function KhachHang() {
         address: "",
         carPlate: "",
     })
+    const [open, setOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const showDrawer = () => {
+        setOpen(true);
+    };
+
+    const onClose = () => {
+        setOpen(false);
+    };
+
     useEffect(() => {
         setLoading(true);
         getAllCustomer().then((res) => {
@@ -49,10 +67,18 @@ export default function KhachHang() {
                 updateTable(data.customer)
                 console.log(dataSource);
                 console.log("Thêm thành công");
-
+                onClose();
             }
         }
     };
+    const handleOk = async () => {
+        setIsModalOpen(false);
+
+    }
+    const handleCancel = () => {
+        setIsModalOpen(false);
+
+    }
     const updateTable = (data) => {
         setDataSource(previousState => {
             console.log(data);
@@ -81,7 +107,7 @@ export default function KhachHang() {
             toast.error("Email không được để trống", toastOptions);
             return false;
         }
-        else if (address === "") {
+        else if (address.value === "") {
             toast.error("Địa chỉ không được để trống", toastOptions);
             return false;
         }
@@ -100,7 +126,10 @@ export default function KhachHang() {
             <Space size={20} direction={"vertical"}>
 
                 <Typography.Title level={4}>Danh sách khách hàng</Typography.Title>
-                <Space>
+                <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
+                    Thêm tài khoản
+                </Button>
+                {/* <Space>
                     <Input placeholder="Mã khách hàng" name="customerId" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Tên khách hàng" name="customerName" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Email" name="email" onChange={(e) => handleOnChange(e)} />
@@ -110,23 +139,23 @@ export default function KhachHang() {
 
                     <Button onClick={(e) => handleClick(e)}>Thêm</Button>
 
-                </Space>
+                </Space> */}
                 <Table columns={[
                     {
                         key: "1",
-                        title: "Id",
+                        title: "Mã khách hàng",
                         dataIndex: "customerId",
                     },
                     {
                         key: "2",
-                        title: "Họ tên",
+                        title: "Họ và tên",
                         dataIndex: "customerName",
 
                     },
 
                     {
                         key: "3",
-                        title: "Email",
+                        title: "Địa chỉ Mail",
                         dataIndex: "email",
                     },
                     {
@@ -140,6 +169,18 @@ export default function KhachHang() {
                         dataIndex: "address",
 
                     },
+                    {
+                        key: "6",
+                        title: "Actions",
+                        render: () => {
+                            return (
+                                <>
+                                    <EditOutlined onClick={showModal}
+                                    />
+                                </>
+                            )
+                        }
+                    },
                 ]}
                     dataSource={dataSource}
                     pagination={
@@ -151,6 +192,115 @@ export default function KhachHang() {
             </Space>
             <ToastContainer />
 
+            <Drawer
+                title="Create a new account"
+                width={720}
+                onClose={onClose}
+                open={open}
+                bodyStyle={{ paddingBottom: 80 }}
+                extra={
+                    <Space>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={(e) => handleClick(e)} type="primary">
+                            Thêm
+                        </Button>
+                    </Space>
+                }
+            >
+                <Form layout="vertical">
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Mã khách hàng"
+                                rules={[{ required: true, message: 'Mã khách hàng không được để trống' }]}
+                            >
+                                <Input
+                                    onChange={(e) => handleOnChange(e)}
+                                    name="customerId"
+                                    placeholder="Nhập mã khách hàng" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+
+                                label="Tên khách hàng"
+                                rules={[{ required: true, message: 'Tên khách hàng không được để trống' }]}
+                            >
+                                <Input
+                                    name="customerName"
+                                    onChange={(e) => handleOnChange(e)}
+                                    placeholder="Nhập tên khách hàng" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+
+                                label="Số điện thoại"
+                                rules={[{ required: true, message: 'Số điện thoại không được để trống' }]}
+                            >
+                                <Input
+                                    name="phone"
+                                    onChange={(e) => handleOnChange(e)}
+                                    placeholder="Nhập số điện thoại" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+
+                                label="Địa chỉ mail"
+                                rules={[{ required: true, message: 'Địa chỉ mail không được để trống' }]}
+                            >
+                                <Input
+                                    name="email"
+                                    onChange={(e) => handleOnChange(e)}
+                                    placeholder="Nhập địa chỉ mail"
+                                    addonAfter="@gmail.com"
+                                />
+                            </Form.Item>
+                        </Col>
+
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+
+                                label="Địa chỉ"
+                                rules={[{ required: true, message: 'Please select a city' }]}
+                            >
+                                <Select
+                                    name="address"
+                                    placeholder="Please select an city">
+                                    <Option value="TP.HCM">Tp.HCM</Option>
+                                    <Option value="Hà Nội">Hà Nội</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+
+                                label="Biển số xe"
+                            >
+                                <Input
+                                    name="carPlate"
+                                    onChange={(e) => handleOnChange(e)}
+                                    placeholder="Nhập biển số xe" />
+                            </Form.Item>
+                        </Col>
+
+                    </Row>
+
+
+                </Form>
+            </Drawer>
+            <Modal
+                width={900}
+                title="Thông tin chi tiết"
+                open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+            >
+                <Space>
+
+                </Space>
+            </Modal>
         </div>
     )
 }
