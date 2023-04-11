@@ -23,44 +23,44 @@ export default function SideMenu() {
                     {
                         label: "Dashboard",
                         icon: <AppstoreOutlined />,
-                        key: '/pagequantri/dashboard',
+                        key: '/admin/dashboard',
                     },
                     {
                         label: "Đơn hàng",
                         icon: <ShoppingCartOutlined />,
                         children: [
-                            { label: "Yêu cầu xử lý", key: '/pagequantri/donhang' },
-                            { label: "Vị trí xử lý", key: '/pagequantri/vitrixuly' },
-                            { label: "Danh sách đơn hàng", key: '/pagequantri/danhsachdonhang' },
-                            { label: "Hóa đơn", key: '/pagequantri/hoadon' },
+                            { label: "Yêu cầu xử lý", key: '/admin/donhang' },
+                            { label: "Vị trí xử lý", key: '/admin/vitrixuly' },
+                            { label: "Danh sách đơn hàng", key: '/admin/danhsachdonhang' },
+                            { label: "Hóa đơn", key: '/admin/hoadon' },
                         ]
                     },
                     {
                         label: "Dịch vụ",
                         icon: <ShopOutlined />,
                         children: [
-                            { label: "Dịch vụ", key: '/pagequantri/dichvu' },
-                            { label: "Sản phẩm", key: '/pagequantri/sanpham' }
+                            { label: "Dịch vụ", key: '/admin/dichvu' },
+                            { label: "Sản phẩm", key: '/admin/sanpham' }
                         ]
                     },
                     {
                         label: "Khách hàng",
-                        key: '/pagequantri/khachhang',
+                        key: '/admin/khachhang',
                         icon: <UserOutlined />
                     },
                     {
                         label: "Nhân viên",
-                        key: '/pagequantri/nhanvien',
+                        key: '/admin/nhanvien',
                         icon: <TeamOutlined />
                     },
                     {
                         label: "Khuyến mãi",
-                        key: '/pagequantri/khuyenmai',
+                        key: '/admin/khuyenmai',
                         icon: <TagOutlined />
                     },
                     {
                         label: "Xe",
-                        key: '/pagequantri/xe',
+                        key: '/admin/xe',
                         icon: <CarOutlined />,
                     },
                     {

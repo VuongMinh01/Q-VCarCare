@@ -1,6 +1,6 @@
 import { Space, Table, Typography, Button } from "antd";
 import React, { useState, useEffect } from "react";
-import { addEmployee, getAllEmployee } from "../../utils/APIRoutes";
+import { addEmployee, getAllEmployee, getEmployee } from "../../utils/APIRoutes";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import Input from "antd/es/input/Input";
@@ -36,6 +36,19 @@ export default function NhanVien() {
         });
     }
 
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        const { employeeId } = values;
+        const { data } = await axios.get(getEmployee)
+        console.log(data.employeeId)
+
+        // if (data.employeeId !== "") {
+        //     console.log('hiiii');
+        // }
+        // if (data.employeeId === "") {
+        //     console.log('chua nhap id can tim');
+        // }
+    }
 
     const handleOnChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
@@ -58,7 +71,6 @@ export default function NhanVien() {
                 setLoading(true)
                 updateColor(data.employee)
                 console.log(dataSource);
-                localStorage.setItem("car-app-employee", JSON.stringify(data.employee));
                 console.log("Thêm thành công");
 
             }
@@ -113,6 +125,10 @@ export default function NhanVien() {
             <Space size={20} direction={"vertical"}>
 
                 <Typography.Title level={4}>Danh sách nhân viên</Typography.Title>
+                <Space>
+                    <Input placeholder="Nhập nhân viên..." />
+                    <Button onClick={(e) => handleSearch(e)}>Tìm</Button>
+                </Space>
                 <Space>
                     <Input placeholder="Mã nhân viên" name="employeeId" onChange={(e) => handleOnChange(e)} />
                     <Input placeholder="Tên nhân viên" name="employeeName" onChange={(e) => handleOnChange(e)} />

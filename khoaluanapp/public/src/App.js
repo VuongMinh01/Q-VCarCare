@@ -28,7 +28,7 @@ function App() {
           <Route path="/dat-lich" element={<FormBooking />} />
           <Route path="/khuyen-mai" element={<Discount />} />
           <Route path="/sidebar" element={<SideBar />} />
-          <Route path="/pagequantri/*" element={<PageQuanTri />}></Route>
+          <Route path="/admin/*" element={<PageQuanTri />}></Route>
           <Route path="/test" element={<Test />}></Route>
 
         </Routes>

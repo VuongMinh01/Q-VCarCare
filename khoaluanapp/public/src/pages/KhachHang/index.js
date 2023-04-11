@@ -1,9 +1,9 @@
-import { Space, Table, Typography, Button, Col, Drawer, Form, Row, Select, Modal } from "antd";
+import { Space, Table, Typography, Button, Col, Drawer, Form, Row, Select, Modal, Segmented } from "antd";
 import React, { useState, useEffect } from "react";
-import { addCustomer, getAllCustomer } from "../../utils/APIRoutes";
+import { addCustomer, getAllCustomer, getCustomerById } from "../../utils/APIRoutes";
 import Input from "antd/es/input/Input";
 import axios from "axios";
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined, InfoOutlined } from '@ant-design/icons';
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -11,7 +11,7 @@ export default function KhachHang() {
     const [loading, setLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
     const { Option } = Select;
-
+    const [input, setInput] = useState('');
     const [values, setValues] = useState({
         customerId: "",
         customerName: "",
@@ -20,20 +20,22 @@ export default function KhachHang() {
         address: "",
         carPlate: "",
     })
+    const [search, setSearch] = useState();
     const [open, setOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // Modal
     const showModal = () => {
         setIsModalOpen(true);
     };
+    // Drawer
     const showDrawer = () => {
         setOpen(true);
     };
-
     const onClose = () => {
         setOpen(false);
     };
-
+    // Load data from db
     useEffect(() => {
         setLoading(true);
         getAllCustomer().then((res) => {
@@ -42,11 +44,12 @@ export default function KhachHang() {
         });
     }, [loading]);
 
+
     const handleOnChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
 
     }
-
+    //  Thêm khách hàng
     const handleClick = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
@@ -71,14 +74,15 @@ export default function KhachHang() {
             }
         }
     };
+    // Modal button
     const handleOk = async () => {
         setIsModalOpen(false);
 
     }
     const handleCancel = () => {
         setIsModalOpen(false);
-
     }
+
     const updateTable = (data) => {
         setDataSource(previousState => {
             console.log(data);
@@ -88,7 +92,28 @@ export default function KhachHang() {
             return previousState
         });
     }
+    const handleRefresh = (e) => {
+        updateTable();
+        clearInput();
+        console.log('refresh');
+    }
+    const clearInput = () => {
+        setInput('');
+    }
+    // Tìm 
+    const handleSearch = async (e) => {
+        const { data } = await axios.get(getCustomerById + '/' + search);
+        let dataTemp = []
+        dataTemp.push(data.resultCustomer)
+        setDataSource(dataTemp);
 
+    }
+
+    const handleOnChangeSearch = (e) => {
+        setSearch(e.target.value)
+    }
+
+    // Valid khi thêm
     const handleValidation = () => {
         const { customerId, customerName, phone, address, email } = values;
         if (customerId.length < 5 || customerId === "") {
@@ -113,6 +138,7 @@ export default function KhachHang() {
         }
         return true;
     }
+    // css thông báo
     const toastOptions = {
         position: "bottom-right",
         autoClose: 8000,
@@ -121,25 +147,35 @@ export default function KhachHang() {
         theme: "dark"
     };
 
+
     return (
         <div>
             <Space size={20} direction={"vertical"}>
 
                 <Typography.Title level={4}>Danh sách khách hàng</Typography.Title>
-                <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-                    Thêm tài khoản
-                </Button>
-                {/* <Space>
-                    <Input placeholder="Mã khách hàng" name="customerId" onChange={(e) => handleOnChange(e)} />
-                    <Input placeholder="Tên khách hàng" name="customerName" onChange={(e) => handleOnChange(e)} />
-                    <Input placeholder="Email" name="email" onChange={(e) => handleOnChange(e)} />
-                    <Input placeholder="Số điện thoại" name="phone" onChange={(e) => handleOnChange(e)} />
-                    <Input placeholder="Địa chỉ" name="address" onChange={(e) => handleOnChange(e)} />
-                    <Input placeholder="Biển số xe" name="carPlate" onChange={(e) => handleOnChange(e)} />
 
-                    <Button onClick={(e) => handleClick(e)}>Thêm</Button>
+                {/* Nút chức năng  */}
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={showDrawer} icon={<PlusOutlined />}>
+                        Thêm tài khoản
+                    </Button>
+                    <Input
+                        type="search"
+                        placeholder="Nhập khách hàng..."
+                        name="searchInput"
+                        onChange={(e) => handleOnChangeSearch(e)}
+                        id="searchInput"
+                    />
 
-                </Space> */}
+                    <Button
+
+                        onClick={(e) => handleSearch()}>Tìm</Button>
+                    <Button onClick={(e) => handleRefresh()}>Refresh</Button>
+                </Space>
+
+                {/* Table thông tin khách hàng */}
                 <Table columns={[
                     {
                         key: "1",
@@ -175,7 +211,7 @@ export default function KhachHang() {
                         render: () => {
                             return (
                                 <>
-                                    <EditOutlined onClick={showModal}
+                                    <InfoOutlined onClick={showModal}
                                     />
                                 </>
                             )
@@ -192,8 +228,9 @@ export default function KhachHang() {
             </Space>
             <ToastContainer />
 
+            {/* Thanh thêm khách hàng */}
             <Drawer
-                title="Create a new account"
+                title="Create a new customer"
                 width={720}
                 onClose={onClose}
                 open={open}
@@ -216,7 +253,7 @@ export default function KhachHang() {
                             >
                                 <Input
                                     onChange={(e) => handleOnChange(e)}
-                                    name="customerId"
+                                    name="customerIdSearch"
                                     placeholder="Nhập mã khách hàng" />
                             </Form.Item>
                         </Col>
@@ -292,12 +329,14 @@ export default function KhachHang() {
 
                 </Form>
             </Drawer>
+            {/* Thông tin chi tiết khách hàng */}
             <Modal
                 width={900}
                 title="Thông tin chi tiết"
                 open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
             >
                 <Space>
+                    <Segmented options={['Thông tin chi tiết', 'Kho xe', 'Lịch sử mua']} />
 
                 </Space>
             </Modal>
